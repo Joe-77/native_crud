@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customers</title>
+    <link rel="stylesheet" href="../output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <header class="bg-white shadow-md py-5">
+        <div
+          class="container mx-auto px-4 md:px-0 lg:w-[85%] flex justify-between items-center"
+        >
+          <h1>My Website</h1>
+          <ul class="flex items-center gap-5">
+            <li><a href="../index.html">Devices</a></li>
+            <li class="relative group">
+              <a href="customers.html" class="text-green-600 font-bold"
+                >Customers</a
+              >
+              <span
+                class="absolute bottom-0 left-0 w-[20px] h-[2px] bg-green-600 duration-500 group-hover:w-[40px]"
+              ></span>
+            </li>
+          </ul>
+        </div>
+      </header>
+    </nav>
+
+    <div class="container mx-auto px-4 md:px-0 lg:w-[85%] mt-5">
+      <button
+        class="bg-blue-600 p-2 text-white rounded-lg duration-300 hover:scale-105"
+        id="add-new-customer"
+      >
+        <i class="fa-solid fa-plus"></i>
+        <span>Add new customer</span>
+      </button>
+
+      <div class="overflow-x-auto mt-8 w-fill">
+        <table
+          class="w-[3000px] bg-white border border-gray-200 rounded-lg pb-20"
+        >
+          <thead class="bg-gray-200 w-full">
+            <tr class="w-[1500px]">
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 capitalize"
+              >
+                #
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                Customer name in arabic
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                Customer name in english
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                tax number
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The next type of identifier
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                Type of invoices
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The street in Arabic
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The street in english
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The city in Arabic
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The city in english
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                The second identifier
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                Building number
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                postal code
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                mailbox number
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                country
+              </th>
+              <th
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              ></th>
+            </tr>
+          </thead>
+          <tbody id="table_body"></tbody>
+        </table>
+      </div>
+
+      <div
+        class="add_new_device duration-300 fixed z-30 top-[-8000px] left-1/2 -translate-x-1/2 bg-white shadow-md w-full max-w-[1023px] xs:h-auto py-5 rounded-md px-4"
+        id="parent_form"
+      >
+        <div class="relative">
+          <button
+            id="close_customer_form"
+            class="absolute right-5 top-0 text-gray-500"
+          >
+            <i class="fa-solid fa-times"></i>
+          </button>
+          <h3
+            id="form_title"
+            class="text-center capitalize font-bold tracking-wide pt-5"
+          >
+            add new customer
+          </h3>
+        </div>
+
+        <form
+          class="mt-4 max-h-screen overflow-y-auto pb-24 grid grid-cols-1 lg:grid-cols-3 gap-5"
+        >
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="arabic_name"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Arabic Customer Name
+            </label>
+            <input
+              type="text"
+              id="arabic_name"
+              name="arabic_name"
+              placeholder="محمد"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none text-right"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="english_name"
+              class="block text-sm font-medium text-gray-700"
+            >
+              English Customer Name
+            </label>
+            <input
+              type="text"
+              id="english_name"
+              name="english_name"
+              placeholder="user"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="tax_number"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Tax Number
+            </label>
+            <input
+              type="number"
+              id="tax_number"
+              name="tax_number"
+              placeholder="000000"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label for="type" class="block text-sm font-medium text-gray-700">
+              Type of Identifier
+            </label>
+            <input
+              type="text"
+              id="type"
+              name="type"
+              placeholder="type"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="invoices"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Type of Invoices
+            </label>
+            <input
+              type="text"
+              id="invoices"
+              name="invoices"
+              placeholder="invoices"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="arabic_address"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Arabic Address
+            </label>
+            <input
+              type="text"
+              id="arabic_address"
+              name="arabic_address"
+              placeholder="الرياض"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-right"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="english_address"
+              class="block text-sm font-medium text-gray-700"
+            >
+              English Address
+            </label>
+            <input
+              type="text"
+              id="english_address"
+              name="english_address"
+              placeholder="KSA"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="arabic_district"
+              class="block text-sm font-medium text-gray-700"
+            >
+              District in Arabic
+            </label>
+            <input
+              type="text"
+              id="arabic_district"
+              placeholder="الرياض"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-right"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="english_district"
+              class="block text-sm font-medium text-gray-700"
+            >
+              District in English
+            </label>
+            <input
+              type="text"
+              id="english_district"
+              placeholder="Riyadh"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="arabic_country"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Arabic Country
+            </label>
+            <input
+              type="text"
+              id="arabic_country"
+              placeholder="الرياض"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize text-right"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="english_country"
+              class="block text-sm font-medium text-gray-700"
+            >
+              English Country
+            </label>
+            <input
+              type="text"
+              id="english_country"
+              placeholder="Riyadh"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="second_identifier"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Second Identifier
+            </label>
+            <input
+              type="number"
+              id="second_identifier"
+              placeholder="126"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="building_number"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Building Number
+            </label>
+            <input
+              type="number"
+              id="building_number"
+              placeholder="12"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="postal_code"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Postal Code
+            </label>
+            <input
+              type="number"
+              id="postal_code"
+              placeholder="45702"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="mailbox_number"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Additional mailbox number
+            </label>
+            <input
+              type="number"
+              id="mailbox_number"
+              placeholder="740"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase text-left placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              for="country"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Country
+            </label>
+            <!-- <select
+            
+            >
+              <option value="">country</option>
+              <option value="AF">Afghanistan</option>
+              <option value="AX">Åland Islands</option>
+              <option value="AL">Albania</option>
+              <option value="DZ">Algeria</option>
+              <option value="AS">American Samoa</option>
+              <option value="AD">Andorra</option>
+              <option value="AO">Angola</option>
+              <option value="AI">Anguilla</option>
+              <option value="AQ">Antarctica</option>
+              <option value="AG">Antigua and Barbuda</option>
+              <option value="AR">Argentina</option>
+              <option value="AM">Armenia</option>
+              <option value="AW">Aruba</option>
+              <option value="AU">Australia</option>
+              <option value="AT">Austria</option>
+              <option value="AZ">Azerbaijan</option>
+              <option value="BS">Bahamas</option>
+              <option value="BH">Bahrain</option>
+              <option value="BD">Bangladesh</option>
+              <option value="BB">Barbados</option>
+              <option value="BY">Belarus</option>
+              <option value="BE">Belgium</option>
+              <option value="BZ">Belize</option>
+              <option value="BJ">Benin</option>
+              <option value="BM">Bermuda</option>
+              <option value="BT">Bhutan</option>
+              <option value="BO">Bolivia (Plurinational State of)</option>
+              <option value="BA">Bosnia and Herzegovina</option>
+              <option value="BW">Botswana</option>
+              <option value="BV">Bouvet Island</option>
+              <option value="BR">Brazil</option>
+              <option value="IO">British Indian Ocean Territory</option>
+              <option value="BN">Brunei Darussalam</option>
+              <option value="BG">Bulgaria</option>
+              <option value="BF">Burkina Faso</option>
+              <option value="BI">Burundi</option>
+              <option value="CV">Cabo Verde</option>
+              <option value="KH">Cambodia</option>
+              <option value="CM">Cameroon</option>
+              <option value="CA">Canada</option>
+              <option value="BQ">Caribbean Netherlands</option>
+              <option value="KY">Cayman Islands</option>
+              <option value="CF">Central African Republic</option>
+              <option value="TD">Chad</option>
+              <option value="CL">Chile</option>
+              <option value="CN">China</option>
+              <option value="CX">Christmas Island</option>
+              <option value="CC">Cocos (Keeling) Islands</option>
+              <option value="CO">Colombia</option>
+              <option value="KM">Comoros</option>
+              <option value="CG">Congo</option>
+              <option value="CD">Congo, Democratic Republic of the</option>
+              <option value="CK">Cook Islands</option>
+              <option value="CR">Costa Rica</option>
+              <option value="HR">Croatia</option>
+              <option value="CU">Cuba</option>
+              <option value="CW">Curaçao</option>
+              <option value="CY">Cyprus</option>
+              <option value="CZ">Czech Republic</option>
+              <option value="CI">Côte d'Ivoire</option>
+              <option value="DK">Denmark</option>
+              <option value="DJ">Djibouti</option>
+              <option value="DM">Dominica</option>
+              <option value="DO">Dominican Republic</option>
+              <option value="EC">Ecuador</option>
+              <option value="EG">Egypt</option>
+              <option value="SV">El Salvador</option>
+              <option value="GQ">Equatorial Guinea</option>
+              <option value="ER">Eritrea</option>
+              <option value="EE">Estonia</option>
+              <option value="SZ">Eswatini (Swaziland)</option>
+              <option value="ET">Ethiopia</option>
+              <option value="FK">Falkland Islands (Malvinas)</option>
+              <option value="FO">Faroe Islands</option>
+              <option value="FJ">Fiji</option>
+              <option value="FI">Finland</option>
+              <option value="FR">France</option>
+              <option value="GF">French Guiana</option>
+              <option value="PF">French Polynesia</option>
+              <option value="TF">French Southern Territories</option>
+              <option value="GA">Gabon</option>
+              <option value="GM">Gambia</option>
+              <option value="GE">Georgia</option>
+              <option value="DE">Germany</option>
+              <option value="GH">Ghana</option>
+              <option value="GI">Gibraltar</option>
+              <option value="GR">Greece</option>
+              <option value="GL">Greenland</option>
+              <option value="GD">Grenada</option>
+              <option value="GP">Guadeloupe</option>
+              <option value="GU">Guam</option>
+              <option value="GT">Guatemala</option>
+              <option value="GG">Guernsey</option>
+              <option value="GN">Guinea</option>
+              <option value="GW">Guinea-Bissau</option>
+              <option value="GY">Guyana</option>
+              <option value="HT">Haiti</option>
+              <option value="HM">Heard Island and Mcdonald Islands</option>
+              <option value="HN">Honduras</option>
+              <option value="HK">Hong Kong</option>
+              <option value="HU">Hungary</option>
+              <option value="IS">Iceland</option>
+              <option value="IN">India</option>
+              <option value="ID">Indonesia</option>
+              <option value="IR">Iran</option>
+              <option value="IQ">Iraq</option>
+              <option value="IE">Ireland</option>
+              <option value="IM">Isle of Man</option>
+              <option value="IL">Israel</option>
+              <option value="IT">Italy</option>
+              <option value="JM">Jamaica</option>
+              <option value="JP">Japan</option>
+              <option value="JE">Jersey</option>
+              <option value="JO">Jordan</option>
+              <option value="KZ">Kazakhstan</option>
+              <option value="KE">Kenya</option>
+              <option value="KI">Kiribati</option>
+              <option value="KP">Korea, North</option>
+              <option value="KR">Korea, South</option>
+              <option value="XK">Kosovo</option>
+              <option value="KW">Kuwait</option>
+              <option value="KG">Kyrgyzstan</option>
+              <option value="LA">Lao People's Democratic Republic</option>
+              <option value="LV">Latvia</option>
+              <option value="LB">Lebanon</option>
+              <option value="LS">Lesotho</option>
+              <option value="LR">Liberia</option>
+              <option value="LY">Libya</option>
+              <option value="LI">Liechtenstein</option>
+              <option value="LT">Lithuania</option>
+              <option value="LU">Luxembourg</option>
+              <option value="MO">Macao</option>
+              <option value="MK">Macedonia North</option>
+              <option value="MG">Madagascar</option>
+              <option value="MW">Malawi</option>
+              <option value="MY">Malaysia</option>
+              <option value="MV">Maldives</option>
+              <option value="ML">Mali</option>
+              <option value="MT">Malta</option>
+              <option value="MH">Marshall Islands</option>
+              <option value="MQ">Martinique</option>
+              <option value="MR">Mauritania</option>
+              <option value="MU">Mauritius</option>
+              <option value="YT">Mayotte</option>
+              <option value="MX">Mexico</option>
+              <option value="FM">Micronesia</option>
+              <option value="MD">Moldova</option>
+              <option value="MC">Monaco</option>
+              <option value="MN">Mongolia</option>
+              <option value="ME">Montenegro</option>
+              <option value="MS">Montserrat</option>
+              <option value="MA">Morocco</option>
+              <option value="MZ">Mozambique</option>
+              <option value="MM">Myanmar (Burma)</option>
+              <option value="NA">Namibia</option>
+              <option value="NR">Nauru</option>
+              <option value="NP">Nepal</option>
+              <option value="NL">Netherlands</option>
+              <option value="AN">Netherlands Antilles</option>
+              <option value="NC">New Caledonia</option>
+              <option value="NZ">New Zealand</option>
+              <option value="NI">Nicaragua</option>
+              <option value="NE">Niger</option>
+              <option value="NG">Nigeria</option>
+              <option value="NU">Niue</option>
+              <option value="NF">Norfolk Island</option>
+              <option value="MP">Northern Mariana Islands</option>
+              <option value="NO">Norway</option>
+              <option value="OM">Oman</option>
+              <option value="PK">Pakistan</option>
+              <option value="PW">Palau</option>
+              <option value="PS">Palestine</option>
+              <option value="PA">Panama</option>
+              <option value="PG">Papua New Guinea</option>
+              <option value="PY">Paraguay</option>
+              <option value="PE">Peru</option>
+              <option value="PH">Philippines</option>
+              <option value="PN">Pitcairn Islands</option>
+              <option value="PL">Poland</option>
+              <option value="PT">Portugal</option>
+              <option value="PR">Puerto Rico</option>
+              <option value="QA">Qatar</option>
+              <option value="RE">Reunion</option>
+              <option value="RO">Romania</option>
+              <option value="RU">Russian Federation</option>
+              <option value="RW">Rwanda</option>
+              <option value="BL">Saint Barthelemy</option>
+              <option value="SH">Saint Helena</option>
+              <option value="KN">Saint Kitts and Nevis</option>
+              <option value="LC">Saint Lucia</option>
+              <option value="MF">Saint Martin</option>
+              <option value="PM">Saint Pierre and Miquelon</option>
+              <option value="VC">Saint Vincent and the Grenadines</option>
+              <option value="WS">Samoa</option>
+              <option value="SM">San Marino</option>
+              <option value="ST">Sao Tome and Principe</option>
+              <option value="SA">Saudi Arabia</option>
+              <option value="SN">Senegal</option>
+              <option value="RS">Serbia</option>
+              <option value="CS">Serbia and Montenegro</option>
+              <option value="SC">Seychelles</option>
+              <option value="SL">Sierra Leone</option>
+              <option value="SG">Singapore</option>
+              <option value="SX">Sint Maarten</option>
+              <option value="SK">Slovakia</option>
+              <option value="SI">Slovenia</option>
+              <option value="SB">Solomon Islands</option>
+              <option value="SO">Somalia</option>
+              <option value="ZA">South Africa</option>
+              <option value="GS">
+                South Georgia and the South Sandwich Islands
+              </option>
+              <option value="SS">South Sudan</option>
+              <option value="ES">Spain</option>
+              <option value="LK">Sri Lanka</option>
+              <option value="SD">Sudan</option>
+              <option value="SR">Suriname</option>
+              <option value="SJ">Svalbard and Jan Mayen</option>
+              <option value="SE">Sweden</option>
+              <option value="CH">Switzerland</option>
+              <option value="SY">Syria</option>
+              <option value="TW">Taiwan</option>
+              <option value="TJ">Tajikistan</option>
+              <option value="TZ">Tanzania</option>
+              <option value="TH">Thailand</option>
+              <option value="TL">Timor-Leste</option>
+              <option value="TG">Togo</option>
+              <option value="TK">Tokelau</option>
+              <option value="TO">Tonga</option>
+              <option value="TT">Trinidad and Tobago</option>
+              <option value="TN">Tunisia</option>
+              <option value="TR">Turkey (Türkiye)</option>
+              <option value="TM">Turkmenistan</option>
+              <option value="TC">Turks and Caicos Islands</option>
+              <option value="TV">Tuvalu</option>
+              <option value="UM">U.S. Outlying Islands</option>
+              <option value="UG">Uganda</option>
+              <option value="UA">Ukraine</option>
+              <option value="AE">United Arab Emirates</option>
+              <option value="GB">United Kingdom</option>
+              <option value="US">United States</option>
+              <option value="UY">Uruguay</option>
+              <option value="UZ">Uzbekistan</option>
+              <option value="VU">Vanuatu</option>
+              <option value="VA">Vatican City Holy See</option>
+              <option value="VE">Venezuela</option>
+              <option value="VN">Vietnam</option>
+              <option value="VG">Virgin Islands, British</option>
+              <option value="VI">Virgin Islands, U.S</option>
+              <option value="WF">Wallis and Futuna</option>
+              <option value="EH">Western Sahara</option>
+              <option value="YE">Yemen</option>
+              <option value="ZM">Zambia</option>
+              <option value="ZW">Zimbabwe</option>
+            </select> -->
+            <select
+              name="country"
+              autocomplete="country"
+              id="country_select"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none text-left uppercase"
+            ></select>
+          </div>
+
+          <div class="lg:col-span-3 max-w-[300px] w-full pb-8 lg:pb-0">
+            <button
+              type="submit"
+              disabled
+              class="w-full bg-blue-600 py-2 text-white rounded-lg disabled:cursor-not-allowed disabled:bg-gray-500"
+              id="submit-form"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="../js/main.js"></script>
+    <script src="../js/country.js"></script>
+  </body>
+</html>
