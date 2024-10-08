@@ -6,11 +6,13 @@ const addNewDevice = document.getElementById("add-new-device");
 const parentForm = document.getElementById("parent_form");
 const formTitle = document.getElementById("form_title");
 const tableTbody = document.getElementById("table_body");
+const sort = document.getElementById("sorted_device");
 
 let data;
 let tmb;
 let mood = "add";
 let show = false;
+let sorted = false;
 
 // Events
 submitForm.addEventListener("click", handleSubmitForm);
@@ -18,6 +20,7 @@ addNewDevice.addEventListener("click", showParentForm);
 signature.addEventListener("keyup", toggleSubmitButton);
 date.addEventListener("change", toggleSubmitButton);
 password.addEventListener("keyup", toggleSubmitButton);
+sort.addEventListener("click", handleDortData);
 // Conditions
 
 if (localStorage.getItem("data") !== null) {
@@ -190,4 +193,25 @@ function clearForm() {
   date.value = "";
   signature.value = "";
   password.value = "";
+}
+
+function handleDortData() {
+  sorted = !sorted;
+
+  if (sorted) {
+    sort.style.borderRightColor = "green";
+    sort.style.borderRightWidth = "5px";
+    sort.style.scale = "1.05";
+
+    data.reverse();
+    showData();
+  } else {
+    data.reverse();
+    localStorage.setItem("data", JSON.stringify(data));
+    sort.style.borderRightColor = "transparent";
+    sort.style.borderRightWidth = "0px";
+    sort.style.scale = "1";
+
+    showData();
+  }
 }

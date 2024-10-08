@@ -31,13 +31,21 @@
     </nav>
 
     <div class="container mx-auto px-4 md:px-0 lg:w-[85%] mt-5">
-      <button
-        class="bg-blue-600 p-2 text-white rounded-lg duration-300 hover:scale-105"
-        id="add-new-device"
-      >
-        <i class="fa-solid fa-plus"></i>
-        <span>Add new device</span>
-      </button>
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-600 p-2 text-white rounded-lg duration-300 hover:scale-105"
+          id="add-new-device"
+        >
+          <i class="fa-solid fa-plus"></i>
+          <span>Add new device</span>
+        </button>
+        <button
+          class="border p-2 text-black rounded-lg duration-300 hover:scale-105 w-24"
+          id="sorted_device"
+        >
+          sort
+        </button>
+      </div>
 
       <div class="overflow-x-auto mt-8">
         <table
