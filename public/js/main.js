@@ -16,6 +16,7 @@ const buildingNumber = document.getElementById("building_number");
 const postalCode = document.getElementById("postal_code");
 const mailboxNumber = document.getElementById("mailbox_number");
 const select = document.getElementById("country_select");
+const sort = document.getElementById("sorted_device");
 
 const btnAddNewCustomer = document.getElementById("add-new-customer");
 const parentForm = document.getElementById("parent_form");
@@ -23,10 +24,11 @@ const closeForm = document.getElementById("close_customer_form");
 const submitForm = document.getElementById("submit-form");
 const formTitle = document.getElementById("form_title");
 
-let customersData;
+const customersData = JSON.parse(localStorage.getItem("customers_data")) || [];
 
 let mood = "add";
 let defaultCountry = "Saudi Arabia";
+let sorted = false;
 let tmb;
 let overlay;
 // Events
@@ -52,13 +54,7 @@ secondIdentifier.addEventListener("keyup", toggleSubmitButton);
 buildingNumber.addEventListener("keyup", toggleSubmitButton);
 postalCode.addEventListener("keyup", toggleSubmitButton);
 mailboxNumber.addEventListener("keyup", toggleSubmitButton);
-
-// Conditions
-if (localStorage.getItem("customers_data") !== null) {
-  customersData = JSON.parse(localStorage.getItem("customers_data"));
-} else {
-  customersData = [];
-}
+sort.addEventListener("click", handleSorted);
 
 showData();
 // Declarations Functions
@@ -180,66 +176,75 @@ function handleSubmit(e) {
 function showData() {
   const tableBody = document.getElementById("table_body");
   tableBody.innerHTML = `
-  ${customersData.map(
-    (e, index) =>
-      `
-    <tr>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      index + 1
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.arabic_customer_name
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.english_customer_name
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.tax_number
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.type_identifier
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.type_invoice
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.arabic_address
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.english_address
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.arabic_district
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.english_district
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.arabic_country
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.english_country
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.second_identifier
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.building_number
-    }</td>
-    <td class="py-2 px-4 border-b border-r text-center border-gray-200">${
-      e.country
-    }</td>
-  <td class="py-2 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3">
-            <button onclick="handleDelete(${index})" class="text-red-600" id="delete">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-            <button onclick="handleUpdateForm(${index})" class="text-blue-600" id="update">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-    </tr>
-    `
-  )}
+  ${customersData
+    .map((e, index) => {
+      return `
+      <tr>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${index + 1}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.arabic_customer_name}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.english_customer_name}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.tax_number}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.type_identifier}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.type_invoice}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.arabic_address}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.english_address}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.arabic_district}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.english_district}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.arabic_country}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.english_country}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.second_identifier}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.building_number}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.country}
+        </td>
+        <td class="py-2 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3">
+          <button
+            onclick="handleDelete(${index})"
+            class="text-red-600"
+            id="delete"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+          <button
+            onclick="handleUpdateForm(${index})"
+            class="text-blue-600"
+            id="update"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </td>
+      </tr>
+      `;
+    })
+    .join("")}
   `;
 }
 
@@ -273,4 +278,21 @@ function handleUpdateForm(index) {
   formTitle.textContent = "update device";
   submitForm.textContent = "update";
   handleShowForm();
+}
+
+function handleSorted() {
+  sorted = !sorted;
+
+  if (sorted) {
+    sort.style.borderRightColor = "green";
+    sort.style.borderRightWidth = "5px";
+    sort.style.scale = "1.05";
+  } else {
+    sort.style.borderRightColor = "transparent";
+    sort.style.borderRightWidth = "0px";
+    sort.style.scale = "1";
+  }
+
+  customersData.reverse();
+  showData();
 }

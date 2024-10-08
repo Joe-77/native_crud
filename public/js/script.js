@@ -8,7 +8,7 @@ const formTitle = document.getElementById("form_title");
 const tableTbody = document.getElementById("table_body");
 const sort = document.getElementById("sorted_device");
 
-let data;
+const data = JSON.parse(localStorage.getItem("data")) || [];
 let tmb;
 let mood = "add";
 let show = false;
@@ -20,14 +20,7 @@ addNewDevice.addEventListener("click", showParentForm);
 signature.addEventListener("keyup", toggleSubmitButton);
 date.addEventListener("change", toggleSubmitButton);
 password.addEventListener("keyup", toggleSubmitButton);
-sort.addEventListener("click", handleDortData);
-// Conditions
-
-if (localStorage.getItem("data") !== null) {
-  data = JSON.parse(localStorage.getItem("data"));
-} else {
-  data = [];
-}
+sort.addEventListener("click", handleSorted);
 
 showData();
 
@@ -195,23 +188,19 @@ function clearForm() {
   password.value = "";
 }
 
-function handleDortData() {
+function handleSorted() {
   sorted = !sorted;
 
   if (sorted) {
     sort.style.borderRightColor = "green";
     sort.style.borderRightWidth = "5px";
     sort.style.scale = "1.05";
-
-    data.reverse();
-    showData();
   } else {
-    data.reverse();
-    localStorage.setItem("data", JSON.stringify(data));
     sort.style.borderRightColor = "transparent";
     sort.style.borderRightWidth = "0px";
     sort.style.scale = "1";
-
-    showData();
   }
+
+  data.reverse();
+  showData();
 }
