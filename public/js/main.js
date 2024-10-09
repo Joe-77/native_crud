@@ -17,17 +17,16 @@ const postalCode = document.getElementById("postal_code");
 const mailboxNumber = document.getElementById("mailbox_number");
 const select = document.getElementById("country_select");
 const sort = document.getElementById("sorted_device");
-
 const btnAddNewCustomer = document.getElementById("add-new-customer");
 const parentForm = document.getElementById("parent_form");
 const closeForm = document.getElementById("close_customer_form");
 const submitForm = document.getElementById("submit-form");
 const formTitle = document.getElementById("form_title");
-
-const customersData = JSON.parse(localStorage.getItem("customers_data")) || [];
+const search = document.getElementById("search_input");
+let customersData = JSON.parse(localStorage.getItem("customers_data")) || [];
 
 let mood = "add";
-let defaultCountry = "Saudi Arabia";
+let defaultCountry = "مصر";
 let sorted = false;
 let tmb;
 let overlay;
@@ -55,6 +54,7 @@ buildingNumber.addEventListener("keyup", toggleSubmitButton);
 postalCode.addEventListener("keyup", toggleSubmitButton);
 mailboxNumber.addEventListener("keyup", toggleSubmitButton);
 sort.addEventListener("click", handleSorted);
+search.addEventListener("keyup", handleSearch);
 
 showData();
 // Declarations Functions
@@ -121,19 +121,14 @@ function handleShowForm() {
   parentForm.classList.add("top-5");
   document.body.appendChild(overlay);
 
-  overlay.addEventListener("click", () => {
-    document.body.removeChild(overlay);
-    parentForm.classList.remove("top-5");
-    parentForm.classList.add("top-[-8000px]");
-    submitForm.disabled = true;
-    clearForm();
-  });
+  overlay.addEventListener("click", handleCloseForm);
 }
 function handleCloseForm() {
   parentForm.classList.remove("top-5");
   parentForm.classList.add("top-[-8000px]");
   document.body.removeChild(overlay);
   submitForm.disabled = true;
+  updateStatus();
   clearForm();
 }
 
@@ -162,14 +157,15 @@ function handleSubmit(e) {
   if (mood === "add") {
     customersData.push(customData);
     localStorage.setItem("customers_data", JSON.stringify(customersData));
+    toaster("تم اضافة العميل بنجاح", "success");
   } else {
     customersData[tmb] = customData;
     localStorage.setItem("customers_data", JSON.stringify(customersData));
     tmb = null;
+    toaster("تم تحديث بيانات العميل بنجاح", "success");
   }
 
-  clearForm();
-  toggleSubmitButton();
+  handleCloseForm();
   showData();
 }
 
@@ -275,24 +271,79 @@ function handleUpdateForm(index) {
   buildingNumber.value = customersData[tmb].building_number;
   postalCode.value = customersData[tmb].postal_code;
   mailboxNumber.value = customersData[tmb].mailbox_number;
-  formTitle.textContent = "update device";
-  submitForm.textContent = "update";
+  select.value = customersData[tmb].country;
+
+  formTitle.textContent = "تحديث بيانات العميل";
+  submitForm.textContent = "تحديث";
+
   handleShowForm();
 }
 
 function handleSorted() {
   sorted = !sorted;
 
+  if (customersData.length === 0) {
+    toaster("لا توجد بيانات حاليا ليتم ترتيبها", "error");
+    return;
+  }
+
   if (sorted) {
     sort.style.borderRightColor = "green";
     sort.style.borderRightWidth = "5px";
     sort.style.scale = "1.05";
   } else {
-    sort.style.borderRightColor = "transparent";
-    sort.style.borderRightWidth = "0px";
+    sort.style.borderRightColor = "#ddd";
+    sort.style.borderRightWidth = "1px";
     sort.style.scale = "1";
   }
 
   customersData.reverse();
+  showData();
+}
+
+function updateStatus() {
+  mood = "add";
+
+  formTitle.textContent = "إضافة جهاز جديد";
+  submitForm.textContent = "إضافة";
+}
+
+function toaster(msg, state) {
+  if (state === "success") {
+    toast.classList.add("bg-green-500");
+    toast.classList.add("text-white");
+  } else if (state === "error") {
+    toast.classList.add("bg-red-500");
+    toast.classList.add("text-white");
+  } else {
+    toast.classList.add("bg-gray-500");
+    toast.classList.add("text-white");
+  }
+
+  toast.textContent = msg;
+
+  toast.classList.remove("top-[-500px]");
+  toast.classList.add("top-5");
+
+  setTimeout(() => {
+    toast.classList.remove("top-5");
+    toast.classList.add("top-[-500px]");
+  }, 2000);
+}
+
+function handleSearch(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const filter = customersData.filter(
+    (e) =>
+      e.english_customer_name.toLowerCase().includes(searchTerm) ||
+      e.arabic_customer_name.toLowerCase().includes(searchTerm)
+  );
+
+  if (e.target.value === "") {
+    customersData = JSON.parse(localStorage.getItem("customers_data"));
+  } else {
+    customersData = filter;
+  }
+
   showData();
 }
