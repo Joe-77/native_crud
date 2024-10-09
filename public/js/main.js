@@ -310,13 +310,13 @@ function updateStatus() {
 
 function toaster(msg, state) {
   if (state === "success") {
-    toast.classList.add("bg-green-500");
+    toast.style.backgroundColor = "green";
     toast.classList.add("text-white");
   } else if (state === "error") {
-    toast.classList.add("bg-red-500");
+    toast.style.backgroundColor = "red";
     toast.classList.add("text-white");
   } else {
-    toast.classList.add("bg-gray-500");
+    toast.style.backgroundColor = "gray";
     toast.classList.add("text-white");
   }
 
