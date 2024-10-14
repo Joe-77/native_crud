@@ -23,13 +23,24 @@ const closeForm = document.getElementById("close_customer_form");
 const submitForm = document.getElementById("submit-form");
 const formTitle = document.getElementById("form_title");
 const search = document.getElementById("search_input");
+
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const current_page = document.getElementById("current_page");
+const total_page = document.getElementById("total_page");
+
 let customersData = JSON.parse(localStorage.getItem("customers_data")) || [];
+let filter_data = customersData;
 
 let mood = "add";
 let defaultCountry = "مصر";
 let sorted = false;
 let tmb;
 let overlay;
+
+let currentPage = 1;
+const itemsPerPage = 6;
+
 // Events
 
 btnAddNewCustomer.addEventListener("click", handleShowForm);
@@ -57,7 +68,48 @@ sort.addEventListener("click", handleSorted);
 search.addEventListener("keyup", handleSearch);
 
 showData();
+updatePaginationInfo();
 // Declarations Functions
+
+function handleShowForm() {
+  overlay = document.createElement("div");
+
+  overlay.classList.add(
+    "fixed",
+    "top-0",
+    "left-0",
+    "right-0",
+    "bottom-0",
+    "flex",
+    "justify-center",
+    "items-center",
+    "bg-gray-500",
+    "opacity-75"
+  );
+
+  parentForm.classList.remove("top-[-8000px]");
+  parentForm.classList.add("top-5");
+  document.body.appendChild(overlay);
+
+  if (checkLang()) {
+    formTitle.textContent = "إضافة عميل جديد";
+    submitForm.textContent = "إضافة";
+  } else {
+    formTitle.textContent = "Add New Customer";
+    submitForm.textContent = "Add";
+  }
+
+  overlay.addEventListener("click", handleCloseForm);
+}
+
+function handleCloseForm() {
+  parentForm.classList.remove("top-5");
+  parentForm.classList.add("top-[-8000px]");
+  document.body.removeChild(overlay);
+  submitForm.disabled = true;
+  updateStatus();
+  clearForm();
+}
 
 function toggleSubmitButton() {
   if (
@@ -81,55 +133,6 @@ function toggleSubmitButton() {
   } else {
     submitForm.disabled = false;
   }
-}
-
-function clearForm() {
-  customerArabicName.value = "";
-  customerEnglishName.value = "";
-  taxNumber.value = "";
-  typeOfIdentifier.value = "";
-  typeOfInvoice.value = "";
-  arabicAddress.value = "";
-  englishAddress.value = "";
-  arabicDistrict.value = "";
-  englishDistrict.value = "";
-  arabicCountry.value = "";
-  englishCountry.value = "";
-  secondIdentifier.value = "";
-  buildingNumber.value = "";
-  postalCode.value = "";
-  mailboxNumber.value = "";
-}
-
-function handleShowForm() {
-  overlay = document.createElement("div");
-
-  overlay.classList.add(
-    "fixed",
-    "top-0",
-    "left-0",
-    "right-0",
-    "bottom-0",
-    "flex",
-    "justify-center",
-    "items-center",
-    "bg-gray-500",
-    "opacity-75"
-  );
-
-  parentForm.classList.remove("top-[-8000px]");
-  parentForm.classList.add("top-5");
-  document.body.appendChild(overlay);
-
-  overlay.addEventListener("click", handleCloseForm);
-}
-function handleCloseForm() {
-  parentForm.classList.remove("top-5");
-  parentForm.classList.add("top-[-8000px]");
-  document.body.removeChild(overlay);
-  submitForm.disabled = true;
-  updateStatus();
-  clearForm();
 }
 
 function handleSubmit(e) {
@@ -170,9 +173,11 @@ function handleSubmit(e) {
 }
 
 function showData() {
+  const currentItems = paginateData();
+
   const tableBody = document.getElementById("table_body");
   tableBody.innerHTML = `
-  ${customersData
+  ${currentItems
     .map((e, index) => {
       return `
       <tr>
@@ -219,9 +224,15 @@ function showData() {
           ${e.building_number}
         </td>
         <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.postal_code}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+          ${e.mailbox_number}
+        </td>
+        <td class="py-2 px-4 border-b border-r text-center border-gray-200">
           ${e.country}
         </td>
-        <td class="py-2 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3">
+        <td class="py-2 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3 border-b">
           <button
             onclick="handleDelete(${index})"
             class="text-red-600"
@@ -273,10 +284,15 @@ function handleUpdateForm(index) {
   mailboxNumber.value = customersData[tmb].mailbox_number;
   select.value = customersData[tmb].country;
 
-  formTitle.textContent = "تحديث بيانات العميل";
-  submitForm.textContent = "تحديث";
-
   handleShowForm();
+
+  if (checkLang()) {
+    formTitle.textContent = "تحديث بيانات العميل";
+    submitForm.textContent = "تحديث";
+  } else {
+    formTitle.textContent = "Update Customer Data";
+    submitForm.textContent = "Update";
+  }
 }
 
 function handleSorted() {
@@ -308,6 +324,46 @@ function updateStatus() {
   submitForm.textContent = "إضافة";
 }
 
+function handleSearch(e) {
+  const searchTerm = e.target.value.toLowerCase().trim();
+
+  if (searchTerm) {
+    filter_data = customersData.filter(
+      (e) =>
+        e.english_customer_name.toLowerCase().includes(searchTerm) ||
+        e.arabic_customer_name.toLowerCase().includes(searchTerm)
+    );
+  } else {
+    filter_data = [...customersData];
+  }
+
+  showData();
+}
+
+function checkLang() {
+  const lng = localStorage.getItem("zatca_translation" || "ar");
+
+  return lng === "ar" ? true : false;
+}
+
+function clearForm() {
+  customerArabicName.value = "";
+  customerEnglishName.value = "";
+  taxNumber.value = "";
+  typeOfIdentifier.value = "";
+  typeOfInvoice.value = "";
+  arabicAddress.value = "";
+  englishAddress.value = "";
+  arabicDistrict.value = "";
+  englishDistrict.value = "";
+  arabicCountry.value = "";
+  englishCountry.value = "";
+  secondIdentifier.value = "";
+  buildingNumber.value = "";
+  postalCode.value = "";
+  mailboxNumber.value = "";
+}
+
 function toaster(msg, state) {
   if (state === "success") {
     toast.style.backgroundColor = "green";
@@ -331,19 +387,41 @@ function toaster(msg, state) {
   }, 2000);
 }
 
-function handleSearch(e) {
-  const searchTerm = e.target.value.toLowerCase();
-  const filter = customersData.filter(
-    (e) =>
-      e.english_customer_name.toLowerCase().includes(searchTerm) ||
-      e.arabic_customer_name.toLowerCase().includes(searchTerm)
-  );
+// Pagination
 
-  if (e.target.value === "") {
-    customersData = JSON.parse(localStorage.getItem("customers_data"));
-  } else {
-    customersData = filter;
-  }
-
-  showData();
+function updatePagination() {
+  const totalPages = Math.ceil(customersData.length / itemsPerPage);
+  total_page.textContent = totalPages;
 }
+
+function paginateData() {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  return filter_data.slice(startIndex, endIndex);
+}
+
+function updatePaginationInfo() {
+  current_page.textContent = currentPage;
+  updatePagination();
+}
+
+function increment() {
+  const totalPages = Math.ceil(customersData.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    showData();
+    updatePaginationInfo();
+  }
+}
+
+function decrement() {
+  if (currentPage > 1) {
+    currentPage--;
+    showData();
+    updatePaginationInfo();
+  }
+}
+
+next.addEventListener("click", increment);
+prev.addEventListener("click", decrement);

@@ -12,13 +12,26 @@ const listOfSorted = document.getElementById("options_sorted");
 const sortedByActive = document.getElementById("sorted_by_active");
 const sortedLatest = document.getElementById("sorted_latest");
 const toast = document.getElementById("toast");
+const search = document.getElementById("search_signature");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const search_signature = document.getElementById("search_signature");
+const current_page = document.getElementById("current_page");
+const total_page = document.getElementById("total_page");
+const getDefaultLang = localStorage.getItem("zatca_translation" || "ar");
 
 let data = JSON.parse(localStorage.getItem("data")) || [];
+
+let filter_data = data;
+
 let tmb;
 let mood = "add";
 let show = false;
 let sorted = false;
 let filterMood = "latest";
+
+let currentPage = 1;
+const itemsPerPage = 6;
 
 // Events
 submitForm.addEventListener("click", handleSubmitForm);
@@ -29,8 +42,18 @@ password.addEventListener("keyup", toggleSubmitButton);
 sort.addEventListener("click", handleSorted);
 sortedByActive.addEventListener("click", sortedActive);
 sortedLatest.addEventListener("click", handleSortedFromLatest);
+next.addEventListener("click", increment);
+search_signature.addEventListener("keyup", handlerSearch);
 
 showData();
+updatePaginationInfo();
+// conditions
+
+if (getDefaultLang === "en") {
+  search.placeholder = "Find the signature...";
+} else {
+  search.placeholder = "ابحث عن التوقيع...";
+}
 
 // Create functions
 
@@ -76,6 +99,7 @@ function handleSubmitForm(e) {
   remover();
   toggleSubmitButton();
   showData();
+  updatePaginationInfo();
 }
 
 function updateStatus() {
@@ -113,64 +137,70 @@ function showParentForm() {
 }
 
 function showData() {
+  const currentItems = paginateData();
+
   tableTbody.innerHTML = `
-  ${data
-    ?.map(
-      (item, index) =>
-        `
-        <tr>
-          <td class="py-2 px-4 border-b border-r text-center border-gray-200">
-            ${index + 1}
-          </td>
-          <td class="py-2 px-4 border-b border-r text-center border-gray-200">
-            ${item.signature_email}
-          </td>
-          <td class="py-2 px-4 border-b border-r text-center border-gray-200">
-            ${
-              item.active
-                ? `
-            <div class="flex items-center justify-center gap-2">
-            <span class="w-2 h-2 bg-green-600 rounded-full"></span>
-            <span class="text-xs">Active</span>
-            </div>
-            `
-                : `
-            <div class="flex items-center justify-center gap-2">
-            <span class="text-xs">Inactive</span>
-            <span class="w-2 h-2 bg-red-600 rounded-full"></span>
-            </div>
-            `
-            }
-          </td>
-          <td class="py-2 px-4 border-b border-r text-center border-gray-200">
-            ${item.date}
-          </td>
-          <td class="py-2 px-4 border-b border-r text-center border-gray-200">
-            <button onclick="handleUpdateActive(${index})" class="border w-14 ${
-          item.active ? "bg-blue-600" : ""
-        } py-3 rounded-xl relative ">
-              <span
-                class="absolute top-[2px] ${
-                  item.active
-                    ? "right-[2px] bg-white"
-                    : "left-[2px] bg-gray-400"
-                } w-5 h-5 rounded-full"
-              ></span>
-            </button>
-          </td>
-          <td class="py-2 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3">
-          <button onclick="handleUpdateForm(${index})" class="text-blue-600" id="update">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>  
-          <button onclick="handleDelete(${index})" class="text-red-600" id="delete">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-            
-          </td>
-        </tr>
-        `
-    )
-    .join("")}
+    ${currentItems
+      ?.map(
+        (item, index) =>
+          `
+          <tr>
+            <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+              ${(currentPage - 1) * itemsPerPage + index + 1}
+            </td>
+            <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+              ${item.signature_email}
+            </td>
+            <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+              ${
+                item.active
+                  ? `
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xs">Active</span>
+                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+              </div>
+              `
+                  : `
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xs">Inactive</span>
+                <span class="w-2 h-2 bg-red-600 rounded-full"></span>
+              </div>
+              `
+              }
+            </td>
+            <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+              ${item.date}
+            </td>
+            <td class="py-2 px-4 border-b border-r text-center border-gray-200">
+              <button onclick="handleUpdateActive(${index})" class="border w-14 ${
+            item.active ? "bg-blue-600" : ""
+          } py-3 rounded-xl relative ">
+                <span
+                  class="absolute top-[2px] ${
+                    item.active
+                      ? "right-[2px] bg-white"
+                      : "left-[2px] bg-gray-400"
+                  } w-5 h-5 rounded-full"
+                ></span>
+              </button>
+            </td>
+            <td class="py-3 px-4 border-r text-center border-gray-200 flex items-center justify-center gap-3 border-b">
+            <button onclick="handleUpdateForm(${
+              (currentPage - 1) * itemsPerPage + index
+            })" class="text-blue-600" id="update">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>  
+            <button onclick="handleDelete(${
+              (currentPage - 1) * itemsPerPage + index
+            })" class="text-red-600" id="delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+              
+            </td>
+          </tr>
+          `
+      )
+      .join("")}
   `;
 }
 
@@ -184,17 +214,27 @@ function handleDelete(index) {
   data.splice(index, 1);
   localStorage.setItem("data", JSON.stringify(data));
   showData();
+  updatePaginationInfo();
 }
 
 function handleUpdateForm(index) {
+  const lng = localStorage.getItem("zatca_translation" || "ar");
+
   // Update form logic here
   mood = "update";
   tmb = index;
   signature.value = data[index].signature_email;
   date.value = data[index].date;
   password.value = data[index].password;
-  formTitle.textContent = "تحديث الجهاز";
-  submitForm.textContent = "تحديث";
+
+  if (lng === "ar") {
+    formTitle.textContent = "تحديث الجهاز";
+    submitForm.textContent = "تحديث";
+  } else {
+    formTitle.textContent = "Update Device";
+    submitForm.textContent = "Update";
+  }
+
   showParentForm();
 }
 
@@ -234,15 +274,16 @@ function handleShowList() {
 }
 //
 function handlerSearch(e) {
-  const filterData = data.filter((item) =>
-    item.signature_email.toLowerCase().includes(e.value)
-  );
+  const searchTerm = e.target.value.toLowerCase().trim();
 
-  if (e.value === "") {
-    data = JSON.parse(localStorage.getItem("data"));
+  if (searchTerm) {
+    filter_data = data.filter((item) =>
+      item.signature_email.toLowerCase().includes(searchTerm)
+    );
   } else {
-    data = filterData;
+    filter_data = [...data];
   }
+
   showData();
 }
 
@@ -316,3 +357,52 @@ function remover() {
   parentForm.classList.add("top-[-500px]");
   clearForm();
 }
+
+function handleShowMenuBar() {
+  document.getElementById("menu_mobile").classList.remove("left-[-8000px]");
+  document.getElementById("menu_mobile").classList.add("left-0");
+}
+
+function handleCloseMenu() {
+  document.getElementById("menu_mobile").classList.remove("left-0");
+  document.getElementById("menu_mobile").classList.add("left-[-8000px]");
+}
+
+// Pagination
+
+function updatePagination() {
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  total_page.textContent = totalPages;
+}
+
+function paginateData() {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  return filter_data.slice(startIndex, endIndex);
+}
+
+function updatePaginationInfo() {
+  current_page.textContent = currentPage;
+  updatePagination();
+}
+
+function increment() {
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    showData();
+    updatePaginationInfo(); //
+  }
+}
+
+function decrement() {
+  if (currentPage > 1) {
+    currentPage--;
+    showData();
+    updatePaginationInfo();
+  }
+}
+
+next.addEventListener("click", increment);
+prev.addEventListener("click", decrement);

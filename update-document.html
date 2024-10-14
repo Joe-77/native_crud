@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update</title>
+    <link rel="stylesheet" href="./public/output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <header class="bg-white shadow-md py-5">
+        <div
+          class="container mx-auto px-4 md:px-0 lg:w-[85%] flex justify-between items-center"
+        >
+          <h1>My Website</h1>
+          <ul class="hidden sm:flex items-center gap-5">
+            <li class="relative group">
+              <a data-i18="devices" href="index.html">الاجهزة</a>
+            </li>
+            <li>
+              <a data-i18="customers" href="customers.html">العملاء</a>
+            </li>
+            <li class="relative group">
+              <a data-i18="documents" href="documents.html">الوثائق</a>
+            </li>
+          </ul>
+
+          <div class="hidden sm:block">
+            <select class="px-5 rounded-md select_lang">
+              <option
+                id="english"
+                value="en"
+                class="text-sm cursor-pointer select-none english"
+              >
+                English
+              </option>
+              <option
+                id="arabic"
+                value="ar"
+                class="text-sm cursor-pointer select-none arabic"
+              >
+                العربية
+              </option>
+            </select>
+          </div>
+
+          <!-- Mobile View -->
+
+          <div class="flex items-center gap-5 sm:hidden">
+            <button
+              onclick="handleShowMenuBar()"
+              class="border p-3 text-black rounded-lg duration-300 hover:scale-105 outline-none"
+              id="hamburger"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div
+              id="menu_mobile"
+              class="fixed max-w-80 w-full h-screen bg-white shadow-md left-[-8000px] top-0 z-50 px-5 py-4 duration-300"
+            >
+              <button onclick="handleCloseMenu()">
+                <i class="fa-solid fa-xmark text-3xl"></i>
+              </button>
+
+              <div class="mt-5">
+                <ul class="flex flex-col gap-5">
+                  <li class="relative group">
+                    <a data-i18="devices" href="index.html">الاجهزة</a>
+                  </li>
+                  <li>
+                    <a
+                      data-i18="customers"
+                      href="customers.html"
+                      class="font-bold text-green-600"
+                      >العملاء</a
+                    >
+                  </li>
+
+                  <li class="relative group">
+                    <a data-i18="documents" href="documents.html">الوثائق</a>
+                  </li>
+                </ul>
+
+                <div class="block mt-5">
+                  <select class="px-5 rounded-md select_lang">
+                    <option
+                      id="english"
+                      value="en"
+                      class="text-sm cursor-pointer select-none english"
+                    >
+                      English
+                    </option>
+                    <option
+                      id="arabic"
+                      value="ar"
+                      class="text-sm cursor-pointer select-none arabic"
+                    >
+                      العربية
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile View -->
+        </div>
+      </header>
+    </nav>
+
+    <div class="container mx-auto px-4 md:px-0 lg:w-[85%] mt-10">
+      <div>
+        <h2 class="text-center text-xl font-bold mb-8 text-gray-800">
+          تعديل بيانات الفاتورة
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 overflow-auto">
+          <!-- Seller Information -->
+          <div
+            class="bg-gradient-to-r from-blue-500 to-blue-400 rounded-lg shadow-md p-4 text-white"
+          >
+            <h3 class="text-2xl font-semibold mb-4">معلومات البائع</h3>
+            <table class="w-full text-sm">
+              <tbody>
+                <tr>
+                  <td class="py-2">الاسم:</td>
+                  <td class="py-2">ث</td>
+                </tr>
+                <tr>
+                  <td class="py-2">رقم المبنى:</td>
+                  <td class="py-2">9888</td>
+                </tr>
+                <tr>
+                  <td class="py-2">اسم الشارع:</td>
+                  <td class="py-2">26مممصص</td>
+                </tr>
+                <tr>
+                  <td class="py-2">المقاطعة:</td>
+                  <td class="py-2">ثثث</td>
+                </tr>
+                <tr>
+                  <td class="py-2">المدينة:</td>
+                  <td class="py-2">نصر</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الدولة:</td>
+                  <td class="py-2">1</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الرمز البريدي:</td>
+                  <td class="py-2">00000</td>
+                </tr>
+                <tr>
+                  <td class="py-2">رقم صندوق البريد الإضافي:</td>
+                  <td class="py-2">1</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الرقم الضريبي:</td>
+                  <td class="py-2">300000000000000003</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Buyer Information -->
+          <div
+            class="bg-gradient-to-r from-green-500 to-green-400 rounded-lg shadow-md p-4 text-white"
+          >
+            <h3 class="text-2xl font-semibold mb-4">معلومات المشتري</h3>
+            <table class="min-w-full text-xs">
+              <tbody>
+                <tr>
+                  <td class="py-2">الاسم:</td>
+                  <td class="py-2">نيو</td>
+                </tr>
+                <tr>
+                  <td class="py-2">رقم المبنى:</td>
+                  <td class="py-2">1455</td>
+                </tr>
+                <tr>
+                  <td class="py-2">اسم الشارع:</td>
+                  <td class="py-2">123 شارع 2 المعادي</td>
+                </tr>
+                <tr>
+                  <td class="py-2">المقاطعة:</td>
+                  <td class="py-2">نيو</td>
+                </tr>
+                <tr>
+                  <td class="py-2">المدينة:</td>
+                  <td class="py-2">المدينة بالعربية</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الدولة:</td>
+                  <td class="py-2">1</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الرمز البريدي:</td>
+                  <td class="py-2">11511</td>
+                </tr>
+                <tr>
+                  <td class="py-2">رقم صندوق البريد الإضافي:</td>
+                  <td class="py-2">11111</td>
+                </tr>
+                <tr>
+                  <td class="py-2">الرقم الضريبي:</td>
+                  <td class="py-2">333333333333333333</td>
+                </tr>
+                <tr>
+                  <td class="py-2">المعرف الثاني:</td>
+                  <td class="py-2">33333</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <form
+          class="mt-20 pb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center"
+        >
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="invoice_number"
+              for="invoice_number"
+              class="block text-sm font-medium text-gray-700"
+            >
+              رقم الفاتورة
+            </label>
+            <input
+              type="number"
+              id="invoice_number"
+              min="0"
+              name="invoice_number"
+              placeholder="2"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="system_invoice_number"
+              for="system_invoice_number"
+              class="block text-sm font-medium text-gray-700"
+            >
+              رقم فاتورة النظام
+            </label>
+            <input
+              type="number"
+              id="system_invoice_number"
+              name="system_invoice_number"
+              placeholder="5"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="invoice_date"
+              for="invoice_date"
+              class="block text-sm font-medium text-gray-700"
+            >
+              تاريخ الفاتورة
+            </label>
+            <input
+              type="date"
+              id="invoice_date"
+              name="invoice_date"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="delivery_date"
+              for="delivery_date"
+              class="block text-sm font-medium text-gray-700"
+            >
+              تاريخ التسليم
+            </label>
+            <input
+              type="date"
+              id="delivery_date"
+              name="delivery_date"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="max_delivery_date"
+              for="max_delivery_date"
+              class="block text-sm font-medium text-gray-700"
+            >
+              تاريخ التسليم الأقصى
+            </label>
+            <input
+              type="date"
+              id="max_delivery_date"
+              name="max_delivery_date"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="total_pay"
+              for="total_pay"
+              class="block text-sm font-medium text-gray-700"
+            >
+              اجمالي الدفع
+            </label>
+            <input
+              type="number"
+              id="total_pay"
+              name="total_pay"
+              placeholder="100"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="invoice_total"
+              for="invoice_total"
+              class="block text-sm font-medium text-gray-700"
+            >
+              مجموع الفاتورة
+            </label>
+            <input
+              type="number"
+              id="invoice_total"
+              name="invoice_total"
+              placeholder="200"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="tax_total"
+              for="tax_total"
+              class="block text-sm font-medium text-gray-700"
+            >
+              مجموع الضريبة
+            </label>
+            <input
+              type="number"
+              id="tax_total"
+              placeholder="2"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="invoice_net"
+              for="invoice_net"
+              class="block text-sm font-medium text-gray-700"
+            >
+              صافي الفاتورة
+            </label>
+            <input
+              type="number"
+              id="invoice_net"
+              placeholder="500"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="total_plus_tax"
+              for="total_plus_tax"
+              class="block text-sm font-medium text-gray-700"
+            >
+              الإجمالي بالإضافة إلى الضريبة
+            </label>
+            <input
+              type="number"
+              id="total_plus_tax"
+              placeholder="10"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="payed_cash"
+              for="payed_cash"
+              class="block text-sm font-medium text-gray-700"
+            >
+              الدفع (كاش)
+            </label>
+            <input
+              type="number"
+              id="payed_cash"
+              placeholder="payed (cash)"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="payed_visa"
+              for="payed_visa"
+              class="block text-sm font-medium text-gray-700"
+            >
+              الدفع (فيزا)
+            </label>
+            <input
+              type="number"
+              id="payed_visa"
+              placeholder="126"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="payed_bank"
+              for="payed_bank"
+              class="block text-sm font-medium text-gray-700"
+            >
+              الدفع (بنك)
+            </label>
+            <input
+              type="number"
+              id="payed_bank"
+              placeholder="120"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="discount"
+              for="discount"
+              class="block text-sm font-medium text-gray-700"
+            >
+              الخصم
+            </label>
+            <input
+              type="number"
+              min="0"
+              id="discount"
+              placeholder="2"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="invoice_type"
+              for="invoice_type"
+              class="block text-sm font-medium text-gray-700"
+            >
+              نوع الفاتورة
+            </label>
+            <select
+              id="invoice_type"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none text-left"
+            >
+              <option
+                value=""
+                data-i18="select_invoice_type"
+                class="text-right"
+              >
+                إختر نوع الفاتورة
+              </option>
+              <option value="B2B">B2B</option>
+              <option value="B2C">B2C</option>
+            </select>
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="left_amount"
+              for="left_amount"
+              class="block text-sm font-medium text-gray-700"
+            >
+              المبلغ المتبقي
+            </label>
+            <input
+              type="number"
+              id="left_amount"
+              placeholder="20"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none lowercase placeholder:capitalize"
+            />
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="vat_category_code"
+              for="vat_category_code"
+              class="block text-sm font-medium text-gray-700"
+            >
+              رمز فئة ضريبة القيمة المضافة
+            </label>
+            <select
+              name="vat_category_code"
+              autocomplete="vat_category_code"
+              id="vat_category_code"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            >
+              <option value="">...</option>
+              <option value="standard rate">
+                التوريدات الخاضعة للضريبة - Standard Rate
+              </option>
+              <option value="exempt from tax">
+                التوريدات المعافاه - Exempt From Tax
+              </option>
+              <option value="zero rated goals">
+                التوريدات الخاضعة لنسبة الصفر - Zero rated goals
+              </option>
+              <option
+                value="Services outside scope of tax / Not subject to Vat"
+              >
+                التوريدات الخاضعة للضريبة - Services outside scope of tax / Not
+                subject to Vat
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-4 flex flex-col gap-2">
+            <label
+              data-i18="vat_category_sub_type"
+              for="vat_category_sub_type"
+              class="block text-sm font-medium text-gray-700"
+            >
+              رمز النوع الفرعي لفئة ضريبة القيمة المضافة
+            </label>
+            <select
+              name="vat_category_sub_type"
+              autocomplete="vat_category_sub_type"
+              id="vat_category_sub_type"
+              class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+            >
+              <option value="">...</option>
+              <option value="standard rate">
+                التوريدات الخاضعة للضريبة - Standard Rate
+              </option>
+            </select>
+          </div>
+
+          <div class="w-full mx-auto">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="return_reason"
+              class="block text-sm font-medium text-gray-700"
+            >
+              سبب الإرجاع
+            </label>
+            <div class="relative">
+              <select
+                name="return_reason"
+                autocomplete="return_reason"
+                id="return_reason"
+                class="shadow-sm border border-gray-300 rounded-md w-full py-2 px-3 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">...</option>
+                <option value="cancel_or_suspend">
+                  إلغاء أو تعليق التوريدات بعد حدوثها كلياً أو جزئياً
+                </option>
+                <option value="substantial_change">
+                  في حالة حدوث تغيير أو تعديل جوهري في التوريد مما يؤدي إلى
+                  تغيير ضريبة القيمة المضافة المستحقة
+                </option>
+                <option value="goods_or_services_return">
+                  في حالة استرداد البضائع أو الخدمات
+                </option>
+                <option value="change_in_info">
+                  في حالة التغيير في معلومات البائع أو المشتري
+                </option>
+                <option value="agreed_value_change">
+                  تعديل قيمة التوريد المتفق عليها مسبقاً بين المورد والمستهلك
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="w-full md:mt-8 md:col-span-2 lg:col-span-3">
+            <button
+              type="submit"
+              disabled
+              class="max-w-[300px] w-full bg-blue-600 py-2 text-white rounded-lg disabled:cursor-not-allowed disabled:bg-gray-500"
+              id="submit-form"
+              data-i18="update"
+            >
+              تحديث
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        id="toast"
+        class="fixed left-1/2 -translate-x-1/2 top-[-500px] z-50 max-w-[300px] w-full py-3 rounded-lg text-center text-white duration-500"
+      >
+        لم يتم تفعيل اي اجهزه من قبل
+      </div>
+    </div>
+
+    <script src="./public/js/update.js"></script>
+    <script src="./public/js/translation.js"></script>
+  </body>
+</html>

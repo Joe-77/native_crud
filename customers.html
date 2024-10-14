@@ -17,31 +17,124 @@
           class="container mx-auto px-4 md:px-0 lg:w-[85%] flex justify-between items-center"
         >
           <h1>My Website</h1>
-          <ul class="flex items-center gap-5">
-            <li><a href="index.html">الأجهزة</a></li>
+          <ul class="hidden sm:flex items-center gap-5">
             <li class="relative group">
-              <a href="customers.html" class="text-green-600 font-bold"
+              <a data-i18="devices" href="index.html">الاجهزة</a>
+            </li>
+            <li class="relative group">
+              <a
+                data-i18="customers"
+                href="customers.html"
+                class="font-bold text-green-600"
                 >العملاء</a
               >
               <span
                 class="absolute bottom-0 left-0 w-[20px] h-[2px] bg-green-600 duration-500 group-hover:w-[40px]"
               ></span>
             </li>
+            <li>
+              <a data-i18="documents" href="documents.html">الوثائق</a>
+            </li>
           </ul>
+
+          <div class="hidden sm:block">
+            <select class="px-5 rounded-md select_lang">
+              <option
+                id="english"
+                value="en"
+                class="text-sm cursor-pointer select-none english"
+              >
+                English
+              </option>
+              <option
+                id="arabic"
+                value="ar"
+                class="text-sm cursor-pointer select-none arabic"
+              >
+                العربية
+              </option>
+            </select>
+          </div>
+
+          <!-- Mobile View -->
+
+          <div class="flex items-center gap-5 sm:hidden">
+            <button
+              onclick="handleShowMenuBar()"
+              class="border p-3 text-black rounded-lg duration-300 hover:scale-105 outline-none"
+              id="hamburger"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div
+              id="menu_mobile"
+              class="fixed max-w-80 w-full h-screen bg-white shadow-md left-[-8000px] top-0 z-50 px-5 py-4 duration-300"
+            >
+              <button onclick="handleCloseMenu()">
+                <i class="fa-solid fa-xmark text-3xl"></i>
+              </button>
+
+              <div class="mt-5">
+                <ul class="flex flex-col gap-5">
+                  <li class="relative group">
+                    <a data-i18="devices" href="index.html">الاجهزة</a>
+                  </li>
+                  <li class="relative group">
+                    <a
+                      data-i18="customers"
+                      href="customers.html"
+                      class="font-bold text-green-600"
+                      >العملاء</a
+                    >
+                    <span
+                      class="absolute bottom-0 left-0 w-[20px] h-[2px] bg-green-600 duration-500 group-hover:w-[40px]"
+                    ></span>
+                  </li>
+
+                  <li>
+                    <a data-i18="documents" href="documents.html">الوثائق</a>
+                  </li>
+                </ul>
+
+                <div class="block mt-5">
+                  <select class="px-5 rounded-md select_lang">
+                    <option
+                      id="english"
+                      value="en"
+                      class="text-sm cursor-pointer select-none english"
+                    >
+                      English
+                    </option>
+                    <option
+                      id="arabic"
+                      value="ar"
+                      class="text-sm cursor-pointer select-none arabic"
+                    >
+                      العربية
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile View -->
         </div>
       </header>
     </nav>
 
     <div class="container mx-auto px-4 md:px-0 lg:w-[85%] mt-5">
-      <div class="flex items-center justify-between flex-col xs:flex-row gap-2">
+      <div class="flex items-center justify-between flex-col xs:flex-row gap-2 text-sm">
         <button
           class="bg-blue-600 p-2 text-white rounded-lg duration-300 hover:scale-105"
           id="add-new-customer"
         >
           <i class="fa-solid fa-plus"></i>
-          <span>إضافة عميل جديد</span>
+          <span data-i18="add_new_customer">إضافة عميل جديد</span>
         </button>
         <button
+          data-i18="sort_by_latest"
           class="border p-3 text-black rounded-lg duration-300 hover:scale-105"
           id="sorted_device"
         >
@@ -50,13 +143,38 @@
       </div>
 
       <div class="mt-8">
-        <input
-          type="text"
-          id="search_input"
-          placeholder="بحث..."
-          class="border border-gray-300 rounded-lg px-4 py-2 outline-none"
-        />
-        
+        <div
+          class="flex flex-col sm:flex-row gap2 justify-between items-center pb-4"
+        >
+          <input
+            type="text"
+            id="search_input"
+            placeholder="search..."
+            class="border border-gray-300 rounded-lg px-4 py-2 outline-none"
+          />
+
+          <div class="flex items-center">
+            <button
+              id="next"
+              data-i18="next"
+              class="px-4 py-2 bg-teal-600 text-white rounded-lg mx-1"
+            >
+              التالي
+            </button>
+            <div class="px-4 py-2">
+              <span id="current_page">1</span>
+              <span data-i18="from">من</span>
+              <span id="total_page">1</span>
+            </div>
+            <button
+              id="prev"
+              data-i18="prev"
+              class="px-4 py-2 bg-teal-600 text-white rounded-lg mx-1"
+            >
+              السابق
+            </button>
+          </div>
+        </div>
       </div>
       <div class="overflow-x-auto mt-4 w-fill">
         <table
@@ -70,71 +188,97 @@
                 #
               </th>
               <th
+                data-i18="customer_arabic_name"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 اسم العميل بالعربية
               </th>
               <th
+                data-i18="customer_english_name"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 اسم العميل بالإنجليزية
               </th>
               <th
+                data-i18="tax_customer_number"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 رقم الضريبة
               </th>
               <th
+                data-i18="another_customer_id_type"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 نوع معرف آخر
               </th>
               <th
+                data-i18="another_customer_invoice_type"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 نوع الفواتير
               </th>
               <th
+                data-i18="street_arabic"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الشارع بالعربية
               </th>
               <th
+                data-i18="street_english"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الشارع بالإنجليزية
               </th>
               <th
+                data-i18="city_arabic"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 المدينة بالعربية
               </th>
               <th
+                data-i18="city_english"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 المدينة بالإنجليزية
               </th>
               <th
+                data-i18="country_arabic"
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                الدولة باللغة العربية
+              </th>
+              <th
+                data-i18="country_english"
+                class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
+              >
+                الدولة باللغة الإنجليزية
+              </th>
+              <th
+                data-i18="customer_second_identifier"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 المعرف الثاني
               </th>
               <th
+                data-i18="building_number"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 رقم المبنى
               </th>
               <th
+                data-i18="postal_code"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الرمز البريدي
               </th>
               <th
+                data-i18="box_number"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 رقم صندوق البريد
               </th>
               <th
+                data-i18="country"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 البلد
@@ -149,7 +293,7 @@
       </div>
 
       <div
-        class="add_new_device duration-300 fixed z-30 top-[-8000px] left-1/2 -translate-x-1/2 bg-white shadow-md w-full max-w-[1023px] xs:h-auto py-5 rounded-md px-4"
+        class="add_new_device duration-300 fixed z-30 top-[-8000px] left-1/2 -translate-x-1/2 bg-white shadow-md w-full max-w-[1023px] xs:h-auto py-8 rounded-md px-4"
         id="parent_form"
       >
         <div class="relative">
@@ -172,6 +316,7 @@
         >
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="customer_arabic_name"
               for="arabic_name"
               class="block text-sm font-medium text-gray-700"
             >
@@ -188,6 +333,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="customer_english_name"
               for="english_name"
               class="block text-sm font-medium text-gray-700"
             >
@@ -204,6 +350,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="tax_customer_number"
               for="tax_number"
               class="block text-sm font-medium text-gray-700"
             >
@@ -219,7 +366,11 @@
           </div>
 
           <div class="mb-4 flex flex-col gap-2">
-            <label for="type" class="block text-sm font-medium text-gray-700">
+            <label
+              data-i18="another_customer_id_type"
+              for="type"
+              class="block text-sm font-medium text-gray-700"
+            >
               نوع الهوية
             </label>
             <input
@@ -233,6 +384,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="another_customer_invoice_type"
               for="invoices"
               class="block text-sm font-medium text-gray-700"
             >
@@ -249,10 +401,11 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="street_arabic"
               for="arabic_address"
               class="block text-sm font-medium text-gray-700"
             >
-              العنوان باللغة العربية
+              الشارع بالعربية
             </label>
             <input
               type="text"
@@ -265,10 +418,11 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="street_english"
               for="english_address"
               class="block text-sm font-medium text-gray-700"
             >
-              العنوان باللغة الإنجليزية
+              الشارع بالإنجليزية
             </label>
             <input
               type="text"
@@ -281,10 +435,11 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="city_arabic"
               for="arabic_district"
               class="block text-sm font-medium text-gray-700"
             >
-              المنطقة باللغة العربية
+              المدينة بالعربية
             </label>
             <input
               type="text"
@@ -296,10 +451,11 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="city_english"
               for="english_district"
               class="block text-sm font-medium text-gray-700"
             >
-              المنطقة باللغة الإنجليزية
+              المدينة بالإنجليزية
             </label>
             <input
               type="text"
@@ -311,6 +467,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="country_arabic"
               for="arabic_country"
               class="block text-sm font-medium text-gray-700"
             >
@@ -326,6 +483,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="country_english"
               for="english_country"
               class="block text-sm font-medium text-gray-700"
             >
@@ -341,6 +499,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="customer_second_identifier"
               for="second_identifier"
               class="block text-sm font-medium text-gray-700"
             >
@@ -356,6 +515,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="building_number"
               for="building_number"
               class="block text-sm font-medium text-gray-700"
             >
@@ -371,6 +531,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="postal_code"
               for="postal_code"
               class="block text-sm font-medium text-gray-700"
             >
@@ -386,6 +547,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="box_number"
               for="mailbox_number"
               class="block text-sm font-medium text-gray-700"
             >
@@ -401,6 +563,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="country"
               for="country"
               class="block text-sm font-medium text-gray-700"
             >
@@ -434,6 +597,7 @@
         لم يتم تفعيل اي اجهزه من قبل
       </div>
     </div>
+    <script src="./public/js/translation.js"></script>
     <script src="./public/js/main.js"></script>
     <script src="./public/js/country.js"></script>
   </body>

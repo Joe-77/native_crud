@@ -17,30 +17,125 @@
           class="container mx-auto px-4 md:px-0 lg:w-[85%] flex justify-between items-center"
         >
           <h1>My Website</h1>
-          <ul class="flex items-center gap-5">
+          <ul class="hidden sm:flex items-center gap-5">
             <li class="relative group">
-              <a href="index.html" class="font-bold text-green-600">الاجهزة</a>
+              <a
+                data-i18="devices"
+                href="index.html"
+                class="font-bold text-green-600"
+                >الاجهزة</a
+              >
               <span
                 class="absolute bottom-0 left-0 w-[20px] h-[2px] bg-green-600 duration-500 group-hover:w-[40px]"
               ></span>
             </li>
-            <li><a href="customers.html">العملاء</a></li>
+            <li><a data-i18="customers" href="customers.html">العملاء</a></li>
+            <li>
+              <a data-i18="documents" href="documents.html">الوثائق</a>
+            </li>
           </ul>
+
+          <div class="hidden sm:block">
+            <select class="px-5 rounded-md select_lang">
+              <option
+                id="english"
+                value="en"
+                class="text-sm cursor-pointer select-none english"
+              >
+                English
+              </option>
+              <option
+                id="arabic"
+                value="ar"
+                class="text-sm cursor-pointer select-none arabic"
+              >
+                العربية
+              </option>
+            </select>
+          </div>
+
+          <!-- Mobile View -->
+
+          <div class="flex items-center gap-5 sm:hidden">
+            <button
+              onclick="handleShowMenuBar()"
+              class="border p-3 text-black rounded-lg duration-300 hover:scale-105 outline-none"
+              id="hamburger"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div
+              id="menu_mobile"
+              class="fixed max-w-80 w-full h-screen bg-white shadow-md left-[-8000px] top-0 z-50 px-5 py-4 duration-300"
+            >
+              <button onclick="handleCloseMenu()">
+                <i class="fa-solid fa-xmark text-3xl"></i>
+              </button>
+
+              <div class="mt-5">
+                <ul class="flex flex-col gap-5">
+                  <li class="relative group">
+                    <a
+                      data-i18="devices"
+                      href="index.html"
+                      class="font-bold text-green-600"
+                      >الاجهزة</a
+                    >
+                    <span
+                      class="absolute bottom-0 left-0 w-[20px] h-[2px] bg-green-600 duration-500 group-hover:w-[40px]"
+                    ></span>
+                  </li>
+                  <li>
+                    <a data-i18="customers" href="customers.html">العملاء</a>
+                  </li>
+
+                  <li>
+                    <a data-i18="documents" href="documents.html">الوثائق</a>
+                  </li>
+                </ul>
+
+                <div class="block mt-5">
+                  <select class="px-5 rounded-md select_lang">
+                    <option
+                      id="english"
+                      value="en"
+                      class="text-sm cursor-pointer select-none english"
+                    >
+                      English
+                    </option>
+                    <option
+                      id="arabic"
+                      value="ar"
+                      class="text-sm cursor-pointer select-none arabic"
+                    >
+                      العربية
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile View -->
         </div>
       </header>
     </nav>
 
     <div class="container mx-auto px-4 md:px-0 lg:w-[85%] mt-5">
-      <div class="flex flex-col xs:flex-row items-center justify-between gap-2">
+      <div
+        class="flex flex-col xs:flex-row items-center justify-between gap-2 text-sm"
+      >
         <button
           class="bg-blue-600 p-2 text-white rounded-lg duration-300 hover:scale-105"
           id="add-new-device"
         >
           <i class="fa-solid fa-plus"></i>
-          <span>اضافة جهاز جديد</span>
+          <span data-i18="add_device">اضافة جهاز جديد</span>
         </button>
         <div id="parent_sorted" class="relative">
           <button
+            data-i18="filter"
             class="border p-3 text-black rounded-lg duration-300 hover:scale-105 outline-none w-[200px]"
             id="sorted_device"
           >
@@ -52,12 +147,14 @@
             id="options_sorted"
           >
             <li
+              data-i18="status"
               class="bg-white border border-gray-200 rounded-lg shadow-md p-3 cursor-pointer"
               id="sorted_by_active"
             >
               الحالة
             </li>
             <li
+              data-i18="latest"
               class="bg-white border border-gray-200 rounded-lg shadow-md p-3 cursor-pointer"
               id="sorted_latest"
             >
@@ -68,12 +165,38 @@
       </div>
 
       <div class="overflow-x-auto mt-8">
-        <input
-          type="text"
-          placeholder="ابحث عن التوقيع..."
-          class="border p-2 rounded-lg mb-4 outline-none lowercase"
-          onkeyup="handlerSearch(this)"
-        />
+        <div
+          class="flex flex-col sm:flex-row gap2 justify-between items-center pb-4"
+        >
+          <input
+            id="search_signature"
+            type="text"
+            placeholder="ابحث عن التوقيع..."
+            class="border p-2 rounded-lg mb-4 outline-none lowercase"
+          />
+
+          <div class="flex items-center">
+            <button
+              id="next"
+              data-i18="next"
+              class="px-4 py-2 bg-teal-600 text-white rounded-lg mx-1"
+            >
+              التالي
+            </button>
+            <div class="px-4 py-2">
+              <span id="current_page">1</span>
+              <span data-i18="from">من</span>
+              <span id="total_page">1</span>
+            </div>
+            <button
+              id="prev"
+              data-i18="prev"
+              class="px-4 py-2 bg-teal-600 text-white rounded-lg mx-1"
+            >
+              السابق
+            </button>
+          </div>
+        </div>
         <table
           class="w-full min-w-[800px] md:min-w-full bg-white border border-gray-200 rounded-lg"
         >
@@ -85,26 +208,31 @@
                 #
               </th>
               <th
+                data-i18="electronic_signature"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 التوقيع الإلكتروني
               </th>
               <th
+                data-i18="status"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الحالة
               </th>
               <th
+                data-i18="end_date"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 تاريخ النهاية
               </th>
               <th
+                data-i18="promotion"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الترويج
               </th>
               <th
+                data-i18="actions"
                 class="py-2 px-4 border-b border-r border-gray-300 text-center text-sm font-semibold text-gray-600 uppercase"
               >
                 الإجراءات
@@ -120,6 +248,7 @@
         id="parent_form"
       >
         <h3
+          data-i18="add_device"
           id="form_title"
           class="text-center capitalize font-bold tracking-wide"
         >
@@ -129,6 +258,7 @@
         <form class="mt-2">
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="electronic_signature"
               for="signature"
               class="block text-sm font-medium text-gray-700"
             >
@@ -144,7 +274,11 @@
           </div>
 
           <div class="mb-4 flex flex-col gap-2">
-            <label for="date" class="block text-sm font-medium text-gray-700">
+            <label
+              data-i18="end_date"
+              for="date"
+              class="block text-sm font-medium text-gray-700"
+            >
               تاريخ النهاية
             </label>
             <input
@@ -158,6 +292,7 @@
 
           <div class="mb-4 flex flex-col gap-2">
             <label
+              data-i18="password"
               for="password"
               class="block text-sm font-medium text-gray-700"
             >
@@ -173,6 +308,7 @@
           </div>
 
           <button
+            data-i18="add"
             type="submit"
             disabled
             class="w-full bg-blue-600 py-2 text-white rounded-lg disabled:cursor-not-allowed disabled:bg-gray-500"
@@ -192,5 +328,6 @@
     </div>
 
     <script src="./public/js/script.js"></script>
+    <script src="./public/js/translation.js"></script>
   </body>
 </html>

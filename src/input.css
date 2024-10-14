@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  scroll-behavior: smooth;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -13,9 +17,9 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-body {
+/* body {
   direction: rtl;
-}
+} */
 
 /* width */
 ::-webkit-scrollbar {
@@ -54,4 +58,8 @@ select:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+form::-webkit-scrollbar {
+  width: 0;
 }
